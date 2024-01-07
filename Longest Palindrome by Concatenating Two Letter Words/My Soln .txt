@@ -1,0 +1,35 @@
+class Solution {
+    public int longestPalindrome(String[] words) {
+        Map<String, Integer> aMap = new HashMap<String, Integer>();
+        int result = 0;
+        String reverse;
+        int sameCharStr = 0;
+        int middleStr = 0; // count if there exist a string of same two char that can bt put in the middle
+        
+        for (int i = 0; i < words.length; i++) {
+            reverse = new StringBuilder(words[i]).reverse().toString();
+
+            if (aMap.containsKey(reverse)) { // cond #1, for Palindrome
+                aMap.put(reverse, aMap.get(reverse)-1);
+                if (aMap.get(reverse) == 0) {
+                    aMap.remove(reverse);
+                }
+                if (words[i].charAt(0) == words[i].charAt(1)) { 
+                    NumOfSameCharString--;
+                }
+                result+=4;
+            }  else if (aMap.containsKey(words[i])) { // cond #2, this is for strings that already exist              
+                aMap.put(words[i], aMap.get(words[i]) + 1);
+            } else { // cond #3, for new strings
+                aMap.put(words[i], 1);
+                if (words[i].charAt(0) == words[i].charAt(1)) {
+                    NumOfSameCharString++;
+                }
+            }
+        }
+        if (NumOfSameCharString > 0) { // if there exist more than one string of same two char to put in the middle
+            result+=2;
+        }
+        return result;                
+    }
+}

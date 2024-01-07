@@ -1,0 +1,6 @@
+ways to solve string and array questions:
+
+- simple calculation using variable
+- two pointers
+- create a new array and use indexing (2d)
+- using mod or '%'

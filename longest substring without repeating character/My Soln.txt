@@ -1,0 +1,24 @@
+// my soln very slow, using two pointer approach would be a lot better
+
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        HashMap<Character, Integer> hm = new HashMap<>();
+        int longest = 0;
+        int cur = 0;
+        
+        int i = 0;
+        while (i < s.length()) {
+            if (hm.containsKey(s.charAt(i))) {
+                i = hm.get(s.charAt(i)) + 1; // if repeat,  get the index of first occurance next character
+                hm.clear();
+                longest = Math.max(longest, cur);
+                cur = 0;
+            } 
+            hm.put(s.charAt(i), i);
+            cur++;
+            i++;
+        }
+        return Math.max(longest, cur);
+    }
+    
+}

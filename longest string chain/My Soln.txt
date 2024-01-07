@@ -1,0 +1,56 @@
+class Solution {
+    public int longestStrChain(String[] words) {
+        
+        Arrays.sort(words, Comparator.comparingInt(String::length));
+
+        HashMap<String, Integer> track = new HashMap<>();
+        int longest = 1;
+        
+        for(int i = words.length - 1; i >= 0; i--) {
+            track.put(words[i], 1);
+        }
+        
+        for (int i = words.length - 1; i >= 0; i--) {
+            // j is the previous word of i
+            int j = i - 1;
+
+            while(true) {
+		// for current word, loop through all words with one less character to compare with
+                if (j < 0 || words[i].length() - words[j].length() > 1) {
+                    break;
+                } else if (words[i].length() - words[j].length() == 1 && track.get(words[j]) < track.get(words[i]) + 1) {
+                    // second check in "else if" is if the words[j] has smaller chain than track.get(words[i]) + 1 
+                    if (predecessor(words[j], words[i])) {
+                        track.put(words[j], track.get(words[i])+1);
+                        longest = Math.max(longest, track.get(words[i])+1);
+                    }
+                }
+                j--;
+            }
+            
+        }
+        return longest;
+    }
+    
+    public boolean predecessor(String wordOne, String wordTwo) {
+                
+        // check if word 1 is predecessor of word 2
+        
+        if(wordTwo.length() - wordOne.length() != 1) { return false; }
+        
+        int i = 0;
+        int j = 0; 
+        int offset = 0;
+        while (i < wordOne.length() || j < wordTwo.length()) {
+            if (i == wordOne.length() || wordOne.charAt(i) != wordTwo.charAt(j)) {
+                offset++;
+                if (offset > 1) { break;}
+                j++;
+            } else {
+                i++;
+                j++;
+            }
+        } 
+        return offset == 1;
+    }
+}

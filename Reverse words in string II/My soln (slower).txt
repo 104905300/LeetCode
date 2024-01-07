@@ -1,0 +1,25 @@
+class Solution {
+    public String reverseWords(String s) {
+        String trimmedStr = s.trim();
+        
+        String curWord = "";
+        String result = "";
+
+        boolean wordAdded = false;
+
+        // String s2 = "Hello " + _s;
+
+        for(int i = trimmedStr.length() - 1; i >= 0; i--) {
+            if (trimmedStr.charAt(i) != ' ') {
+                wordAdded = false;
+                curWord = ("" + trimmedStr.charAt(i)) + curWord;
+            } else if (wordAdded == false) {
+                result = result + curWord + " ";
+                wordAdded = true;
+                curWord = "";
+            }
+        }
+        // the last word was not added when we break the loop, add it to the result
+        return result + curWord;
+    }
+}

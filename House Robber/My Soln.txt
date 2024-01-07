@@ -1,0 +1,25 @@
+// though not the MOST concise, still very good in turns of runtime and space management
+
+class Solution {
+    public int rob(int[] nums) {
+        // int sumA, sumB, sumC, sumD;
+        // for (int i = 0; i < nums.length; i++) {
+        // }
+        if (nums.length == 1) {
+            return nums[0];
+        }
+        int i = 0;
+        int frontBiggest = nums[1];
+        int backBiggest = nums[0];
+        while (i < nums.length - 2) {
+            if (i == nums.length-3) {
+                return Math.max(frontBiggest, backBiggest + nums[nums.length-1]);
+            }
+            // keep current frontBiggest since we need to use it the get the new backbiggest
+            int oldFrontBiggest = frontBiggest;
+            frontBiggest = Math.max(frontBiggest + nums[i+3], backBiggest + nums[i+3]);
+            backBiggest = Math.max(backBiggest + nums[i+2], oldFrontBiggest);
+            i+=2;
+        }
+        return Math.max(frontBiggest, backBiggest);
+    }

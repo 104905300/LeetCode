@@ -1,0 +1,70 @@
+// not time nor space efficient but it's a hard question for me and I DID IT!
+
+class Solution {
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+        
+        List<List<Integer>> coordinates = new ArrayList<>();
+        
+        for (int r = 0; r < heights.length; r++) {
+            for (int c = 0; c < heights[0].length; c++) {
+                if (flowtoPacificAndAtlanticBST(heights, r, c)) {
+                    coordinates.add(Arrays.asList(r,c));
+                }
+            }
+        }
+        return coordinates;
+    }
+   
+    public boolean flowtoPacificAndAtlanticBST(int[][] heights, int r, int c) {
+        Queue<int[]> waterFlowCoordinates = new LinkedList<>();
+        // key is coordinate, if key is in dict then it's watered
+        Map<List<Integer>, Integer> watered = new HashMap<>();
+        
+        waterFlowCoordinates.add(new int[]{r , c});
+        watered.put(Arrays.asList(r, c), 0);
+        
+        boolean flowPacific = false;
+        boolean flowAtlantic = false;
+        
+        while (!waterFlowCoordinates.isEmpty()) {
+            int[] coordinate = waterFlowCoordinates.poll();
+            int curRow = coordinate[0];
+            int curColumn = coordinate[1];
+            
+            // if the water reach up and left edge it flows to pacific 
+            if (curRow == 0 || curColumn == 0) {
+                flowPacific = true;
+            }
+            // if the water reach right and down edge it flows to atlantic 
+            if (curRow == (heights.length - 1) || curColumn == (heights[0].length - 1)) {
+                flowAtlantic = true;
+            }
+            
+            if (flowPacific && flowAtlantic) {
+                return true;
+            }
+            
+            // add neighbouring cells if they have lower sea level and they are not on the edge
+            if (curRow > 0 && heights[curRow][curColumn] >= heights[curRow-1][curColumn] && !watered.containsKey(Arrays.asList(curRow-1, curColumn))) {
+                waterFlowCoordinates.add(new int[]{curRow-1 , curColumn});
+                watered.put(Arrays.asList(curRow-1, curColumn), 0);
+                
+            }
+            if (curRow < (heights.length - 1) && heights[curRow][curColumn] >= heights[curRow+1][curColumn] && !watered.containsKey(Arrays.asList(curRow+1, curColumn))) {
+                waterFlowCoordinates.add(new int[]{curRow+1 , curColumn});
+                watered.put(Arrays.asList(curRow+1, curColumn), 0);
+            }
+            if (curColumn > 0 && heights[curRow][curColumn] >= heights[curRow][curColumn-1] && !watered.containsKey(Arrays.asList(curRow, curColumn-1))) {
+                waterFlowCoordinates.add(new int[]{curRow , curColumn-1});
+                watered.put(Arrays.asList(curRow, curColumn-1), 0);
+            }
+            if (curColumn < (heights[0].length - 1) && heights[curRow][curColumn] >= heights[curRow][curColumn+1] && !watered.containsKey(Arrays.asList(curRow, curColumn+1))) {
+                waterFlowCoordinates.add(new int[]{curRow , curColumn+1});
+                watered.put(Arrays.asList(curRow, curColumn+1), 0);
+            }
+            
+        }
+        return false;
+    }
+
+}

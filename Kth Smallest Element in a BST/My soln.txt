@@ -1,0 +1,28 @@
+class Solution {
+    public int kthSmallest(TreeNode root, int k) {
+        
+        // this questions is basically in order travseal with extra steps
+
+        Stack<TreeNode> s = new Stack<TreeNode>();
+        s.push(root);
+        TreeNode temp = root.left;
+            
+        while (temp != null || !s.isEmpty()) {
+            while(temp != null) {
+                s.push(temp);
+                temp = temp.left;
+            }
+            temp = s.pop();
+            
+            // this is the extra steps
+            k--;
+            if (k == 0){
+                return temp.val;
+            }
+	    // extra steps done
+            
+            temp = temp.right;
+        }
+        return -1;
+    }
+}

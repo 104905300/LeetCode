@@ -1,0 +1,16 @@
+/* the order is: prev2, prev1, num  */
+
+public int rob(int[] nums) {
+    if (nums.length == 0) return 0;
+    int prev1 = 0;
+    int prev2 = 0;
+    for (int num : nums) {
+        int tmp = prev1;
+        prev1 = Math.max(prev2 + num, prev1);
+        prev2 = tmp;
+    }
+    return prev1;
+}
+
+
+/* Explanation: tracking one largest is not enough, what if the next number is the new largest but can't be added by the current largest because they are right next to each other? that's why you need to track 2 largest (largest from prev1 and largest from prev2). */

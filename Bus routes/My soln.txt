@@ -1,0 +1,43 @@
+// not the fastest but this is a hard problem and I DID IT
+
+class Solution {
+    public int numBusesToDestination(int[][] routes, int source, int target) {
+        
+        if (source == target) {
+            return 0;
+        }
+        
+        int result = 1;
+        Map<Integer, Integer> mapOne = new HashMap<Integer, Integer>();
+        Map<Integer, Integer> mapTwo = new HashMap<Integer, Integer>();
+        mapOne.put(source, 0);
+
+        while(!mapOne.isEmpty()) {
+            
+            for (int i = 0; i < routes.length; i++) {
+                for (int j = 0; j < routes[i].length; j++) {
+
+                    if (routes[i][j] == -1) { // current row already been visited, move to next row
+                        break;
+                    }
+                    if (mapOne.containsKey(routes[i][j])) {
+                        for (int k = 0; k < routes[i].length; k++) {
+                            if (routes[i][k] == target) {
+                                return result;
+                            }
+                            mapTwo.put(routes[i][k], 0);
+                            routes[i][k] = -1; // to signal it's been visited
+                        }
+                        break;
+                    }
+
+                }
+            }
+            mapOne = new HashMap<Integer, Integer>(mapTwo);
+            mapTwo.clear();
+            result++;
+        }
+        return -1;
+        
+    }
+}

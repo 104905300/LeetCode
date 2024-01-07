@@ -1,0 +1,44 @@
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int curRow = 0;
+        int curCol = 0;
+        List<Integer> result = new ArrayList<>();
+        
+        for(int i = 0; i < matrix.length * matrix[0].length; i++) {
+            if ((i % 4) == 0) { // right
+                while (curCol < matrix[0].length && matrix[curRow][curCol] != 101) {
+                    result.add(matrix[curRow][curCol]);
+                    matrix[curRow][curCol] = 101;
+                    curCol++;
+                }
+                curCol--; // col overflow by 1 at the end so minus 1
+                curRow++; // cur position already visted, so move to the next spot (down one)
+            } else if ((i % 4) == 1) { // down
+                while (curRow < matrix.length && matrix[curRow][curCol] != 101) {
+                    result.add(matrix[curRow][curCol]);
+                    matrix[curRow][curCol] = 101;
+                    curRow++;
+                }
+                curRow--; // overflow fix
+                curCol--; // move left one spot
+            } else if ((i % 4) == 2) { // left
+                while (curCol >= 0 && matrix[curRow][curCol] != 101) {
+                    result.add(matrix[curRow][curCol]);
+                    matrix[curRow][curCol] = 101;
+                    curCol--;
+                }
+                curCol++; // overflow fix
+                curRow--; // move up one spot
+            }  else {// up
+                while (curRow >= 0 && matrix[curRow][curCol] != 101) {
+                    result.add(matrix[curRow][curCol]);
+                    matrix[curRow][curCol] = 101;
+                    curRow--;
+                }
+                curRow++; // overflow fix
+                curCol++; // move right one spot
+            }
+        }
+        return result;
+    }
+}

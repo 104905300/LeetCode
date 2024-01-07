@@ -1,0 +1,70 @@
+class Solution {
+    public int maxProduct(int[] nums) {
+        // if start with 0 product will always be 0, therefore start with 1
+        int max = nums[0];
+        int curProduct = 0;
+        boolean hasZero = false;
+        
+        // start ind and end ind before reaching a zero
+        int firstIndAfterZero = 0;
+        
+        for (int i = 0; i < nums.length; i++) {
+             if (nums[i] == 0) {
+                hasZero = true;
+                if (curProduct == 0) {
+                    firstIndAfterZero = i + 1;
+                    continue;
+                }
+                curProduct = maxProduct(nums, curProduct, firstIndAfterZero, i - 1);
+                max = Math.max(max, curProduct);
+                firstIndAfterZero = i + 1;
+                curProduct = 0;
+            } else {
+                if (curProduct == 0) {
+                    curProduct = nums[i];
+                } else {
+                    curProduct *= nums[i];
+                }
+            }
+        }
+        
+        if (nums[nums.length-1] != 0) {
+            curProduct = maxProduct(nums, curProduct, firstIndAfterZero, nums.length-1);
+            max = Math.max(max, curProduct);
+        }
+        if (hasZero) {
+            return Math.max(max, 0);
+        }
+        return max;
+        
+    }
+    
+    public int maxProduct(int[] nums, int curProduct, int startInd, int endInd) {
+        // both edges are inclusive
+        if (endInd == startInd) {
+            return nums[startInd];
+        }
+        if (curProduct > 0) {
+            return curProduct;
+        }
+        
+        int productOne = curProduct;
+        int productTwo = curProduct;
+        while(true) {
+            productOne /= nums[startInd];
+            if (productOne > 0) { // stop after divided first negative
+                break;
+            }
+            startInd++;
+        }
+        
+        while(true) {
+            productTwo /= nums[endInd];
+            if (productTwo > 0) { // stop after divided first negative
+                break;
+            }
+            endInd--;
+        }
+        return Math.max(productOne, productTwo);
+    }
+}

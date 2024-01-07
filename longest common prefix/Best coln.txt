@@ -1,0 +1,10 @@
+public String longestCommonPrefix(String[] strs) {
+    if (strs.length == 0) return "";
+    String pre = strs[0];
+    for (int i = 1; i < strs.length; i++)
+        while(strs[i].indexOf(pre) != 0)
+	    // pre is the current common prefix, strs[i].indexOf(pre) == 0 means common prefix is in strs[i] (current word),
+	    // if current common prefix not in current word, delete last char of current common prefix and try again 
+            pre = pre.substring(0,pre.length()-1);
+    return pre;
+}

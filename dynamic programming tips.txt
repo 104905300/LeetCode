@@ -1,0 +1,5 @@
+technique:
+
+1. use array index as your friend
+2. use memory for things that already calculated
+3. iterative shortcut

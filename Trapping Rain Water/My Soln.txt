@@ -1,0 +1,59 @@
+// works but too slow, exceed time limit for large arrays
+
+class Solution {
+    public int trap(int[] height) {
+        // start counting when the next index is lower than the current index
+        // end when the current index height is the same or higher than height of beginning index
+        // count the total height in between 
+        // height of the edges * width of the edges - total height in between is the result
+        
+        int maxIndex = 0;
+        int result = 0;
+        
+        for(int i = 1; i < height.length; i++) {
+            if (height[i] > height[maxIndex]) {maxIndex = i;}
+        }
+        
+        int ptOneInd = maxIndex;
+        int ptTwoInd = ptOneInd - 1;
+        HashMap<Integer, Integer> numOfBlocks = new HashMap<>();
+        
+        while(ptOneInd > 0) { // rain drop for the left side of the max height
+            // keep finding the next biggest index
+            int listInd = 1;
+            for (int i = ptOneInd - 1 ; i >= 0; i--) { // find local max
+                numOfBlocks.put(listInd, numOfBlocks.getOrDefault(listInd-1, 0) + height[i]); // accumulate number of blocks
+                if (height[i] > height[ptTwoInd]) {ptTwoInd = i;}
+                listInd++;
+            }
+            int h = height[ptTwoInd];
+            int w = ptOneInd - ptTwoInd - 1;
+            // rain drop collect in this area is equal to h * w - number of rain drop between them
+            result += h * w - numOfBlocks.getOrDefault(w, 0);
+            
+            ptOneInd = ptTwoInd;
+            ptTwoInd = ptOneInd - 1;
+        }
+        
+        ptOneInd = maxIndex;
+        ptTwoInd = ptOneInd + 1;
+        while(ptOneInd < height.length - 1) { // rain drop for the right side of the max height
+            // keep finding the next biggest index
+            int listInd = 1;
+            for (int i = ptOneInd + 1 ; i < height.length; i++) { // find local max
+                numOfBlocks.put(listInd, numOfBlocks.getOrDefault(listInd-1, 0) + height[i]); // accumulate number of blocks
+                if (height[i] > height[ptTwoInd]) {ptTwoInd = i;}
+                listInd++;
+            }
+            int h = height[ptTwoInd];
+            int w = ptTwoInd - ptOneInd - 1;
+            // rain drop collect in this area is equal to h * w - number of rain drop between them
+            result += h * w - numOfBlocks.getOrDefault(w, 0);
+            
+            ptOneInd = ptTwoInd;
+            ptTwoInd = ptOneInd + 1;
+        }
+
+        return result;
+    }
+}

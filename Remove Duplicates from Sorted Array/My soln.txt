@@ -1,0 +1,19 @@
+    public int removeDuplicates(int[] nums) {
+
+        if (nums.length == 1) {
+            return 1;
+        }
+
+        int pointerA = 1; // pointer A is responsible for array number replacement
+        int pointerB = 1; // pointer B iterate the list and checks for the non duplicate number
+
+        while(pointerB < nums.length) {
+            if(nums[pointerB] != nums[pointerB - 1]) { // a non duplicate number in the sorted array is detected
+                nums[pointerA] = nums[pointerB];
+                pointerA++;
+            }
+            pointerB++;
+        }
+        return pointerA;
+
+    }

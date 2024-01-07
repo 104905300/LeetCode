@@ -1,0 +1,23 @@
+    public boolean canJump(int[] nums) {
+        // table for positions that leads to dead end, set it to -1
+        int[] mem_table = new int[nums.length];
+        return canJumpHelper(nums, 0, mem_table);
+    }
+
+    public boolean canJumpHelper(int[] nums, int index, int[] mem_table) {
+        if (index == nums.length - 1) {
+            return true;
+        } else if (index > nums.length - 1 || mem_table[index] == -1 || nums[index] == 0) {
+            return false;
+        }
+
+        // i is all possible steps for current num
+        for (int i = nums[index]; i > 0; i--) {
+            if (canJumpHelper(nums, index + i, mem_table)) {
+                return true;
+            }
+        }
+        // if code reach here, this index lead to a deadend since all possible jump is tried for this index
+        mem_table[index] = -1;
+        return false;
+    }

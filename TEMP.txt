@@ -1,0 +1,45 @@
+        
+        if (s.length() < 3) {
+            return 0;
+        }
+        
+        int maxOccurrence = 0;
+        HashMap<Character, Integer> m = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            m.put(s.charAt(i), m.getOrDefault(s.charAt(i), 0) + 1);
+            maxOccurrence = Math.max(maxOccurrence, m.get(s.charAt(i)));
+        }
+        
+        int[] occurrence;
+        int result = 0;
+        for (int i = 0; i < s.length(); i++) {
+            
+            if (m.getOrDefault(s.charAt(i), 0) == maxOccurrence) {
+                occurrence = new int[26];
+                
+                int temp = s.length() - 1;
+                while (s.charAt(temp) != s.charAt(i)) {temp--;}
+                for (int j = temp; j >= i; j--) {
+                    occurrence[s.charAt(j)-'a']++;
+                }
+                // min occrance of a character inside the max occrance charater range
+                int min = Integer.MAX_VALUE;
+                for(int num: occurrence) { //26 character, constant time
+                    if(num !=0) {min = Math.min(min, num);}
+                }
+                // if no other character beside the max character in this range
+                if (maxOccurrence == min && maxOccurrence != s.length()) {
+                    return maxOccurrence - 1; //biggest possible result
+                }
+                result = Math.max(result, maxOccurrence - min);
+                m.remove(s.charAt(i));
+            }
+            
+        }
+        return result;
+
+
+                if (!secondLetterExist) {
+                    if (localbigestDiff == s.length()) {return 0;}
+                    bigestDiff = Math.max(bigestDiff, localbigestDiff - 1);
+                }
